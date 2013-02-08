@@ -1,0 +1,113 @@
+/* Theme colors placed at the top for easy access*/
+
+/* Magic */
+span.select_details
+{ color:#3d8fa8; }
+
+span.full_card{
+	min-height: 250px;
+	width: 400px;
+	border-style: solid;
+	border-width: .5px;
+	border-radius: 15px;
+	display: inline-block;
+	margin: 0px 1px 5px 1px;
+	padding: 5px;
+	vertical-align: text-top;
+	background-color: white;
+}
+
+span.full_card_wrapper{
+	display: inline-block;
+}
+
+span.small_card{
+	min-height: 250px;
+	width: 240px;
+	border-style: solid;
+	border-width: .5px;
+	border-radius: 15px;
+	display: inline-block;
+	margin: 0px 1px 5px 1px;
+	padding: 5px;
+	vertical-align: text-top;
+}
+
+img.card{
+	float: left;
+	margin: 3px;
+}
+
+p.card{
+	margin: 0 0 2px 0;
+}
+
+span.card{
+	display: inline-block;
+	margin: 0px;
+	position: relative;
+}
+
+span.card_sub{
+	margin-bottom: 10px;
+	margin-right: 80px;
+	display: inline-block;
+	position: relative;
+}
+
+span.card_hor_sub{
+	margin-bottom: 10px;
+	margin-right: 125px;
+	display: inline-block;
+	position: relative;
+}
+
+/**/
+span.card_select{
+	display: inline-block;
+	margin: 0px;
+	position: relative;
+	text-align: center;
+}
+
+img.card_normal{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+}
+
+img.card_greyed_out{
+	opacity: .6;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+}
+/**/
+img.card_greyed_out_back{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+}
+
+img.card_hor_greyed_out{
+	opacity: .6;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+}
+
+img.card_hor_greyed_out_back{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+}
+/**/
+span.select_details{
+	font-size: .7em;
+	background-color: white;
+}

@@ -1,0 +1,342 @@
+/* Magic */
+span.fake_link
+{ color: #3d8fa8; }
+
+html, body {
+	height: 100%;
+}
+
+body {
+	font-size: .9em;
+	font-family: arial,helvetica,sans-serif,verdana,helvetica,sans-serif;
+	background-color: black;
+}
+
+#div_window {
+	position: relative;
+	min-height: 600px;
+	width: 899px;
+	background-color: white;
+	border-style: solid;
+	border-width: 5px;
+	border-color: #347936;
+	margin: 0px;
+	padding: 0px;
+	z-index: 0;
+}
+
+#div_opp {
+	position: absolute;
+	top: 500px;
+	height: 100px;
+	width: 900px;
+	background-color: #d8d8d8;
+	background-color: #9cc871;
+	margin: 0px;
+	padding: 0px;
+	z-index: 501;
+}
+
+#div_player {
+	position: absolute;
+	top: 500px;
+	height: 100px;
+	width: 900px;
+	background-color: gray;
+	margin: 0px;
+	padding: 0px;
+	z-index: 500;
+}
+
+span.sp_class{
+	font-size: 2em;
+	font-wieght: 550;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+span.sp_name{
+	font-size: 1.25em;
+	position: absolute;
+	top: 45px;
+	left: 5px;
+}
+
+span.sp_momentum{
+	font-size: 1.2em;
+	position: absolute;
+	top: 10px;
+	left: 250px;
+	background-color: #c90106;
+	padding: 5px;
+	border-style: solid;
+	width: 40px;
+	height: 20px;
+	overflow: hidden;
+}
+
+span.sp_mp{
+	font-size: 1.2em;
+	position: absolute;
+	top: 50px;
+	left: 250px;
+	background-color: #3d8fa8;
+	padding: 5px;
+	border-style: solid;
+	width: 40px;
+	height: 20px;
+	overflow: hidden;
+}
+
+span.sp_gold{
+	font-size: 1.2em;
+	position: absolute;
+	top: 10px;
+	left: 320px;
+	background-color: #ffd618;
+	padding: 5px;
+	border-style: solid;
+	width: 40px;
+	height: 20px;
+	overflow: hidden;
+}
+
+span.sp_good{
+	font-size: 1.2em;
+	position: absolute;
+	top: 50px;
+	left: 320px;
+	background-color: #e1e1f0;
+	padding: 5px;
+	border-style: solid;
+	width: 40px;
+	height: 20px;
+	overflow: hidden;
+}
+
+span.sp_evil{
+	font-size: 1.2em;
+	position: absolute;
+	top: 50px;
+	left: 320px;
+	background-color: #1d1d1d;
+	color: #ffffff;
+	padding: 5px;
+	border-style: solid;
+	border-color: #000000;
+	width: 40px;
+	height: 20px;
+	overflow: hidden;
+}
+
+span.sp_neutral{
+	font-size: 1.2em;
+	position: absolute;
+	top: 50px;
+	left: 320px;
+	background-color: #9cc871;
+	padding: 5px;
+	border-style: solid;
+	width: 40px;
+	height: 20px;
+	overflow: hidden;
+}
+
+span.right_align{
+	float: right;
+}
+
+span.fake_link{
+	text-decoration: underline;
+}
+
+img.img_deck{
+	position: absolute;
+	top: 12.5px;
+	left: 400px;
+}
+
+div.div_deck{
+	position: absolute;
+	top: 40px;
+	left: 425px;
+	font-size: 1.5em;	
+}
+
+img.img_hand{
+	position: absolute;
+	top: 12.5px;
+	left: 500px;
+}
+
+div.div_hand{
+	position: absolute;
+	top: 40px;
+	left: 525px;
+	font-size: 1.5em;	
+}
+
+img.img_field{
+	position: absolute;
+	top: 12.5px;
+	left: 600px;
+}
+
+div.div_field{
+	position: absolute;
+	top: 40px;
+	left: 625px;
+	font-size: 1.5em;	
+}
+
+img.img_discard{
+	position: absolute;
+	top: 12.5px;
+	left: 700px;
+}
+
+div.div_discard{
+	position: absolute;
+	top: 40px;
+	left: 725px;
+	font-size: 1.5em;	
+}
+
+img.img_removed{
+	position: absolute;
+	top: 12.5px;
+	left: 800px;
+}
+
+div.div_removed{
+	position: absolute;
+	top: 40px;
+	left: 825px;
+	font-size: 1.5em;	
+}
+
+div.relative{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+div.main_content_text{
+	position: relative;
+	min-height: 0px;
+	width: 95%;
+	margin: 0px;
+	padding: 5px;
+	font-size: 1.2em;
+	background-color: transparent;
+}
+
+div.main_content_cards{
+	position: relative;
+	min-height: 0px;
+	width: 95%;
+	margin: 0px;
+	padding: 0px;
+	background-color: transparent;
+}
+
+#div_p1, #div_p1_non_game{
+	position: absolute;
+	top: 199px;
+	left: 0px;
+	min-height: 402px;
+	width: 900px;
+	z-index: -10;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+
+#div_p1_card_details{
+	position: absolute;
+	top: 199px;
+	left: 0px;
+	min-height: 392px;
+	width: 890px;
+	z-index: -10;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 10px 0px 0px 10px;
+	background-color: white;
+}
+
+#div_p2{
+	position: absolute;
+	top: 329px;
+	left: 0px;
+	min-height: 272px;
+	width: 900px;
+	z-index: -10;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+
+#div_p2_card_details{
+	position: absolute;
+	top: 329px;
+	left: 0px;
+	min-height: 262px;
+	width: 890px;
+	z-index: -10;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 10px 0px 0px 10px;
+	background-color: white;
+}
+
+#div_p2_sub{
+	position: absolute;
+	top: 99px;
+	left: 0px;
+	height: 132px;
+	width: 900px;
+	z-index: -10;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+
+#div_p3, #div_p3_non_game{
+	position: absolute;
+	top: 99px;
+	left: 0px;
+	height: 402px;
+	width: 900px;
+	z-index: -10;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+
+#div_p3_card_details{
+	position: absolute;
+	top: 99px;
+	left: 0px;
+	height: 392px;
+	width: 890px;
+	z-index: -10;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 10px 0px 0px 10px;
+	background-color: white;
+}
+
+#div_screen{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+	background-color: white;
+}

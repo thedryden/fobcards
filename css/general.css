@@ -1,0 +1,94 @@
+/* Set Colors "master" colors at top so they can be easily changed latter */
+
+/* Attack */
+h2, A:hover
+{ color: #c90106 }  
+
+/* Magic */
+h1, A:link, A:active
+{ color: #3d8fa8; }
+
+/* Gold */
+h4
+{ color: #ffd618; }
+
+/* Block */
+h3
+{ color: #7e7e7c; }
+
+/*Headers*/
+
+/*Tables*/
+table {	
+  border-width: 1px;
+	border-spacing: 0px;
+	border-style: solid;
+	border-color: #c2c2c2;
+	font-size: .9em;
+	font-family: arial,helvetica,sans-serif,verdana,helvetica,sans-serif;
+	border-collapse:collapse;
+}
+
+td {
+	border-width: 1px;
+	padding: 2px 3px 2px 3px;
+	border-style: solid;
+	border-color: #c2c2c2;
+	text-align: left;
+}
+
+th {
+	border-width: 1px;
+	padding: 2px 3px 2px 3px;
+	border-style: solid;
+	border-color: #c2c2c2;
+	text-align: center;
+}
+
+.no_border,
+.no_border td,
+.no_border th {
+  border-style: none;
+}
+
+/*images*/
+img {
+	border-style: none
+}
+
+/*Links*/
+A:link {
+  text-decoration: none;
+  text-decoration: underline;
+}
+A:visited {
+  text-decoration: none;
+}
+A:hover {
+  text-decoration: underline;
+}
+A:active {
+  text-decoration: none;
+}
+
+/*P Tags*/
+p.error {
+	font-weight: 550;
+	color: #a81313;	
+}
+
+/*Form Tags*/
+input.right{
+	text-align: right;
+}
+
+hr {
+	color: black;
+}
+
+/*Other Styles*/
+fixed_top_left{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}

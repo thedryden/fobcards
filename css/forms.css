@@ -1,0 +1,51 @@
+/*Small Form*/
+form.small_form {
+	position: relative;
+	left: 200px;
+	width: 450px;
+}
+
+span.small_form {
+  	display: inline-block;
+	position: relative;
+	width: 150px;
+}
+
+input.small_form {
+	width: 200px;
+}
+
+select.small_form {
+	width: 205px;
+}
+
+textarea.small_form {
+	width: 355px;
+	height: 75px;
+}
+
+input.small_form_third {
+	width: 100px
+}
+
+/*Filtered List*/
+div.filtered_list{
+	position: absolute;
+	width:450px;
+	height: 300px;
+	background-color: #fff8c6;
+	z-index: 100;
+	padding: 10px;
+	overflow: auto;
+}
+
+table.filtered_list{
+	 border-style: none;
+	 width: 355px;
+}
+
+td.filtered_list{
+	width: 250px;
+	color: #3d8fa8;
+	text-decoration: underline;
+}

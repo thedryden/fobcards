@@ -1,0 +1,105 @@
+/* Theme colors places at top for easy access */
+
+/* Filed */
+body
+{ background-color: #347936; }
+
+html, body {
+	height: 100%;
+}
+
+body {
+	font-size: .9em;
+	font-family: arial,helvetica,sans-serif,verdana,helvetica,sans-serif;
+	text-align: center;
+}
+
+/*Provides provides the main definition of the page, seperated into outer_main and main so that that header can render without padding*/
+.outer_main {
+  	width: 800px;
+	min-height: 90%;
+	background-color: #ffffff;
+	margin: auto;
+	padding-bottom: 65px;  
+}
+
+.main {
+  	width: 775px;
+	min-height: 100%;
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 10px;
+}
+
+/*Header and Menu*/
+/*Used to place text over image, such as in the header, width and height of the td tag must match the images*/
+.header {
+	width: 800px;
+	height: 100px;
+	background-image:url('banner.png');
+	position:relative;
+	background-color: #000000;
+}
+
+.header_text {
+	color: #ffffff;
+	font-family: arial,helvetica,sans-serif;
+	font-size: 2.4em;
+	position:absolute;
+	bottom: 25px;
+	right: 5px;
+}
+
+div.footer {
+  text-align: center;
+	padding-top: 20px;
+	width: 790px;
+	font-size: .65em;
+	color: #bbbbbb;
+	margin-top: -40px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*Menu*/
+#menu_div {
+	width: 795px;
+	height: 20px;
+	position:absolute;
+	bottom: 5px;
+	right: 0px;	
+}
+
+#menu {
+	font-size:1em;
+	font-weight: bold;
+	text-align: right;
+	position:absolute;
+	top: 0px;
+	right: 5px;
+	margin: 5px;
+	background-color: #000000;
+}
+
+#menu li {
+	display: inline;
+	list-style-type: none;
+	padding-left: 15px;
+	margin-left: 0px;
+}
+
+A.menu:link {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+A.menu:visited {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+A.menu:hover {
+	text-decoration: underline;
+	color: red;
+}
