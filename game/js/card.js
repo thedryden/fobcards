@@ -129,9 +129,9 @@ function Card( inID
 	if( $.isArray( inBlockCardsSecondType ) ){
 		var blockCardsSecondType = inBlockCardsSecondType;
 	} else {
-		var temp = inBlockCardsSecondType.split(',');
-		var temp1 = inBlockCardsSecondTypeMinDamage.split(',');
-		var temp2 = inBlockCardsSecondTypeMaxDamage.split(',');
+		temp = inBlockCardsSecondType.split(',');
+		temp1 = inBlockCardsSecondTypeMinDamage.split(',');
+		temp2 = inBlockCardsSecondTypeMaxDamage.split(',');
 		
 		var blockCardsSecondType = [];
 		
@@ -146,9 +146,9 @@ function Card( inID
 	if( $.isArray( inCostMods ) ){
 		var costMods = inCostMods;
 	} else {
-		var temp = inCostMods.split(',');
-		var temp1 = inCostModsPlayedTurnOnly.split(',');
-		var temp2 = inCostModsEffectOwner.split(',');
+		temp = inCostMods.split(',');
+		temp1 = inCostModsPlayedTurnOnly.split(',');
+		temp2 = inCostModsEffectOwner.split(',');
 		var temp3 = inCostModsModInt.split(',');
 		
 		var costMods = [];
@@ -163,9 +163,9 @@ function Card( inID
 	if( $.isArray( inDamageMods ) ){
 		var damageMods = inDamageMods;
 	} else {
-		var temp = inDamageMods.split(',');
-		var temp1 = inDamageModsPlayedTurnOnly.split(',');
-		var temp2 = inDamageModsModInt.split(',');
+		temp = inDamageMods.split(',');
+		temp1 = inDamageModsPlayedTurnOnly.split(',');
+		temp2 = inDamageModsModInt.split(',');
 		
 		var damageMods = [];
 		
@@ -179,9 +179,9 @@ function Card( inID
 	if( $.isArray( inDeffenseMods ) ){
 		var deffenseMods = inDeffenseMods;
 	} else {
-		var temp = inDeffenseMods.split(',');
-		var temp1 = inDeffenseModsPlayedTurnOnly.split(',');
-		var temp2 = inDeffenseModsModInt.split(',');
+		temp = inDeffenseMods.split(',');
+		temp1 = inDeffenseModsPlayedTurnOnly.split(',');
+		temp2 = inDeffenseModsModInt.split(',');
 		
 		var deffenseMods = [];
 		
@@ -219,14 +219,14 @@ function Card( inID
 			, blockCardsSecondType
 			, ''//blockCardsSecondTypeMinDamage
 			, ''//blockCardsSecondTypeMaxDamage
-			, inCostMods
+			, costMods
 			, ''//inCostModsPlayedTurnOnly
 			, ''//inCostModsEffectOwner
 			, ''//inCostModsModInt
-			, inDamageMods
+			, damageMods
 			, ''//inDamageModsPlayedTurnOnly
 			, ''//inDamageModsModInt
-			, inDeffenseMods
+			, deffenseMods
 			, ''//inDeffenseModsPlayedTurnOnly
 			, ''//inDeffenseModsModInt 
 		); 
@@ -484,13 +484,16 @@ function Card( inID
 		if( typeID == 8 ) return false;
 		
 		var available = -1;
+		var tempCost = cost;
 		
 		switch( costID ){
 			case 1: //Momentum
-				available = objGame.getCurrentPlayer().getMomentum() + objGame.getCurrentPlayer().getMomentumMod();
+				available = objGame.getCurrentPlayer().getMomentum();
+				if( cost != 0 ) tempCost += objGame.getCurrentPlayer().getMomentumMod();
 				break;
 			case 2: //MP
-				available = objGame.getCurrentPlayer().getMP() + objGame.getCurrentPlayer().getMPMod();
+				available = objGame.getCurrentPlayer().getMP();
+				if( cost != 0 ) tempCost += objGame.getCurrentPlayer().getMPMod();
 				break;
 			case 3: //Gold
 				available = objGame.getCurrentPlayer().getGold();
@@ -514,12 +517,12 @@ function Card( inID
 	}
 	this.isLegal = isLegal;
 	
-	function isBlockLegal(){
+	function isBlockLegalHand(){
 		if( typeID != 8 ) return false;
 		
 		var available = -1;
 		
-		switch( inCostID ){
+		switch( costID ){
 			case 1: //Momentum
 				available = objGame.getReactionPlayer().getMomentum();
 				break;
@@ -542,7 +545,7 @@ function Card( inID
 		
 		if( available < cost ) return false;
 		
-		var damage = objGame.getCardInPlayDamage();
+		var damage = objGame.getCardDamage();
 
 		//0 = typeID, 1 = Min Damage, 2 = Max Damage
 		for( var i = 0; i < blockCards.length; i++ ){
@@ -559,7 +562,34 @@ function Card( inID
 		}
 		return false;
 	}
-	this.isBlockLegal = isBlockLegal;
+	this.isBlockLegalHand = isBlockLegalHand;
+	
+	function isBlockLegalOverturn(){
+		if( typeID != 8 ) return false;
+		
+		var available = -1;
+		if( costID == 1 ) available = objGame.getReactionPlayer().getMomentum();
+		
+		if( available < cost ) return false;
+		
+		var damage = objGame.getCardDamage();
+
+		//0 = typeID, 1 = Min Damage, 2 = Max Damage
+		for( var i = 0; i < blockCards.length; i++ ){
+			if( objGame.getCardInPlay().isBlockedAs( blockCards[i][0] ) ){
+				if( damage >= blockCards[i][1] 
+					&& ( blockCards[i][2] == -1 || damage <= blockCards[i][2] ) ) return true;
+			}
+		}
+		for( var i = 0; i < blockCardsSecondType.length; i++ ){
+			if( objGame.getCardInPlay().isBlockedAsSecondType( blockCardsSecondType[i][0] ) ){
+				if( damage >= blockCardsSecondType[i][1] 
+					&& ( blockCardsSecondType[i][2] == -1 || damage <= blockCardsSecondType[i][2] ) ) return true;
+			}
+		}
+		return false;
+	}
+	this.isBlockLegalOverturn = isBlockLegalOverturn;
 	
 	//When determining resources before picking a card, after oppPlayCardAbilityMods
 	function playCardFieldEffectMods(){

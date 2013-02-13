@@ -11,6 +11,7 @@ function Game( inGameID ){
 	var isPlayerIndex = -1;//Stores which player "owns" the game
 	
 	var skipTurns = 0;//Indicates how many turns to skip
+	var spellsPlayed = 0;//If this gets set to 1, end current players turn
 	
 	var playerLoopIndex = 0;//Used to allows many function to be resumed from where they left off if an interup is called
 	
@@ -139,18 +140,18 @@ function Game( inGameID ){
 	 * 	This is done in the game as it relys on using the modifiers
 	 * 	from both players.
 	 */
-	function getCardInPlayDamage(){
+	function getCardDamage(){
 		var damageMod = 0;
 		var deffMod = 0;
 		
-		switch( cardInPlay.getCardTypeID ){
+		switch( cardInPlay.getTypeID() ){
 			case 1:
 				damageMod = getCurrentPlayer().getAttackDamageMod();
 				deffMod = getReactionPlayer().getAttackDeffenseMod();
 				break;
 			case 2:
 				damageMod = getCurrentPlayer().getMagicDamageMod();
-				deffMod = getReactionPlayer().getMagicDeffenseMod();
+				deffMod = getReationPlayer().getMagicDeffenseMod();
 				break;
 		}
 		
@@ -159,7 +160,7 @@ function Game( inGameID ){
 		
 		return out;	
 	}
-	this.getCardInPlayDamage = getCardInPlayDamage;
+	this.getCardDamage = getCardDamage;
 	
 	// First function called to starts the game
 	function startGame(){
@@ -240,7 +241,7 @@ function Game( inGameID ){
 			getCurrentPlayer().payCost( cardInPlay );
 			if( cardInPlay.payCostEffect() ) return true;
 			
-			equipPlayEffect()
+			equipPlayEffect();
 		}
 	}
 	this.equipPlay = equipPlay;
@@ -334,6 +335,7 @@ function Game( inGameID ){
 	function startTurn(){
 		cardsPlayedThisTurn.length = 0;
 		activatedAbilityUsed = false;
+		spellsPlaye = 0;
 		
 		if( getCurrentPlayer().startTurnAbility() ) return true;
 		
@@ -484,11 +486,155 @@ function Game( inGameID ){
 	this.oppBlockCardAbilityMods = oppBlockCardAbilityMods;
 	
 	function playCardSuccess(){
+		getCurrentPlayer().addCard( cardInPlay.getID(), 'field', getCurrentPlayer().getField().length, 0 );
 		
+		if( cardInPlay.cardOnPlayEffect() ) return true;
+		
+		playCardSuccessAbility();
 	}
 	this.playCardSuccess = playCardSuccess;
 	
+	function playCardSuccessAbility(){
+		if( getCurrentPlayer().cardOnPlayAbility() ) return true;
+		
+		doDamage();
+	}
+	this.playCardSuccessAbility = playCardSuccessAbility;
 	
+	function doDamage(){
+		getCurrentPlayer().doDamageFieldEffectMods();
+		
+		takeDamageFieldEffectMods();
+	}
+	this.doDamage = doDamage;
+	
+	function takeDamageFieldEffectMods(){
+		getReactionPlayer().takeDamageFieldEffectMods();
+		
+		doDamageFinal();
+	}
+	this.takeDamageFieldEffectMods = takeDamageFieldEffectMods;
+	
+	function doDamageFinal(){
+		var damage = getCardDamage();
+		if( damage == 0 ) {
+			playCardSuccessEnd();
+			return;
+		}
+		
+		getReactionPlayer().moveCard( 1, 'field', 'deck' )
+		
+		var blocked = false;
+		
+		var position = 'player'
+		if( getReactionPlayer().getDeckID() != getIsPlayer( true ).getDeckID() ) position = 'opp';
+		
+		objControls.resetCardArray();
+		objControls.changePosition( position );
+		
+		for( var i = 0; i < damage; i++ ){
+			var tempCard = getReactionPlayer().overturnCard();
+			if( tempCard == undefined ) break;
+			objControls.addCardToArray( tempCard, '' );
+			if( tempCard.isBlockLegalOverturn() ){
+				blocked = true;
+				break;
+			}
+		}
+		
+		var pronoun = "you"
+		if( position == "opp" ) pronoun = "your opponent"
+		
+		
+		if( !blocked ){
+			objControls.prependText( '<p>The following cards where overturned as ' + pronoun + ' took damage, but the card was not blocked.</p>' );
+			objControls.appendText( '<span class="fake_link" onClick="objGame.playCardSuccessEnd();">Continue the Game</span>' );
+		} else {
+			objControls.prependText( '<p>The following cards where overturned as ' + pronoun + ' took damage, and ' + pronoun + ' blocked the card.</p>' );
+			objControls.appendText( '<span class="fake_link" onClick="objGame.endTurn();">Continue the Game</span>' );
+		}
+		
+		setValues();
+		objControls.changePositionAnimate( 'objGame.getControls().addCards()' );
+	}
+	this.doDamageFinal = doDamageFinal;
+	
+	function playCardSuccessEnd(){
+		cardsPlayedThisTurn[cardsPlayedThisTurn.length] = cardInPlay;
+		
+		if( cardInPlay.isSecondType( 1 ) ) spellsPlayed++;
+		
+		if( spellsPlayed > 0 ){
+			endTurn();
+		} else {
+			startPlay();
+		}		
+	}
+	this.playCardSuccessEnd = playCardSuccessEnd;
+	
+	function blockPicked( cardID ){
+		getCurrentPlayer().addCard( cardInPlay.getID(), 'discard', getCurrentPlayer().getDiscard().length, 0 );
+		
+		blockInPlay = getCard( cardID );
+		getReactionPlayer().moveCard( cardID, 'hand', 'field' );
+		
+		getReactionPlayer().payCost( blockInPlay );
+		if( blockInPlay.payCostEffect() ) return true;
+		
+		blockOnPlayEffect();
+	}
+	this.blockPicked = blockPicked;
+	
+	function blockOnPlayEffect(){
+		if( blockInPlay.cardOnPlayEffect() ) return true;
+		
+		blockOnPlayAbility();
+	}
+	
+	function blockOnPlayAbility(){
+		if( getReactionPlayer().blockOnPlayAbility() ) return true;
+		
+		oppBlockOnPlayAbility();
+	}
+	this.blockOnPlayAbility = blockOnPlayAbility;
+	
+	function oppBlockOnPlayAbility(){
+		if( getCurrentPlayer().oppBlockOnPlayAbility() ) return true;
+		
+		 blockEnd();
+	}
+	this.oppBlockOnPlayAbility = oppBlockOnPlayAbility;
+	
+	function blockEnd(){
+		if( blockInPlay.getDamage() == 0 ){
+			if( getReactionPlayer().getDeckID() == getIsPlayer( false ).getDeckID() ){
+				objControls.resetCardArray();
+				objControls.changePosition( 'opp' );
+				objControls.prependText('<p>Your ' + getCurrentPlayer().getPlayerName() + ' has blocked you card with the following.</p>' );
+				objControls.appendText( '<span class="fake_link" onClick="objGame.endTurn();">Continue the Game</span>' );
+				objControls.addCardToArray( blockInPlay, '' );
+				setValues();
+				objControls.changePositionAnimate( 'objGame.getControls().addCards()' );
+			} else {
+				endTurn();	
+			}
+		} else {
+			getCurrentPlayer().moveCard( 1, 'field', 'deck' );
+			var out = ''
+			var reactionOut = undefined;
+			
+			if( getReactionPlayer().getDeckID() == getIsPlayer( true ).getDeckID() ){
+				out = "<p>Your block ended your " + getCurrentPlayer().getPlayerName() + "'s turn and did the following damage.</p>"
+				out += '<span class="fake_link" onClick="objGame.endTurn();">Continue the Game</span>'
+			} else {
+				out = "<p>" + getCurrentPlayer().getPlayerName() + " blocked your card, ended your turn and did the following damage.</p>"
+				out += '<span class="fake_link" onClick="objGame.endTurn();">Continue the Game</span>'
+				reactionOut = getCurrentPlayer().getPlayerName() + " blocked your card with ";
+			}
+			
+			overturnCards( 'current', blockInPlay.getDamage(), 'objGame.endTurn()', out, reactionOut, blockInPlay.getID() )
+		}
+	}
 	
 	//Calls to endTurn and (typically) change the current player
 	function endTurn(){
@@ -554,6 +700,8 @@ function Game( inGameID ){
 	}
 	this.showCards = showCards;
 	
+	/* Non specific timing functions
+	 */
 	function setValues(){
 		$('#sp_opp_momentum').html( getIsPlayer( false ).getMomentum() );
 		$('#sp_opp_momentum_cost_mod').html( getIsPlayer( false ).getMomentumMod() );
@@ -607,5 +755,63 @@ function Game( inGameID ){
 		for( var i = 0; i < players.length; i++ ){
 			players[i].getResources()
 		}
+	}
+	
+	/*	Overturns num cards from the target player, and then provides a contiue
+	 * 	button linked to the nextMethod. Optional text may be provided. Optional
+	 * 	if target is not the player, reaction text may be provided. Optional
+	 * 	if target is not the player, a card may be added to reaction window
+	 */
+	function overturnCards( target, num, nextMethod, text, reactionText, reactionCard ){
+		if( num == 0 ){
+			eval(nextMethod);
+			return;
+		}
+		
+		var tempPlayer;
+		if( target == 'current' ){
+			tempPlayer = getCurrentPlayer();
+		} else {
+			tempPlayer = getReactionPlayer();
+		}
+		
+		var position = 'player'
+		if( tempPlayer.getDeckID() != getIsPlayer( true ).getDeckID() ) position = 'opp';
+		if( position == 'opp' && reactionText != undefined ){
+			position = 'reaction'
+		}
+		
+		objControls.resetCardArray();
+		objControls.changePosition( position );
+		
+		var tempCard;
+		
+		for( var i = 0; i < num; i++ ){
+			tempCard = getReactionPlayer().overturnCard();
+			if( tempCard == undefined ) break;
+			objControls.addCardToArray( tempCard, '' );
+		}
+		
+		/*
+		if( tempCard == undefined ){
+			endGame();
+		}
+		*/
+		
+		if( text == undefined ){
+			objControls.prependText( '<p>The following cards where overturned.</p>' );
+		} else {
+			objControls.prependText( text );
+		}
+		
+		if( position == 'reaction' ){
+			objControls.prependSubText( reactionText );
+			if( reactionCard != undefined ){
+				objControls.addCardSubDiv( reactionCard );
+			}
+		}
+		
+		setValues();
+		objControls.changePositionAnimate( 'objGame.getControls().addCards()' );
 	}
 }

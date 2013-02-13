@@ -61,9 +61,6 @@ function Controls(){
 	 * 	reaction is opp to top, with a card sized gap between opp and player
 	 * 	opp is Opp to top, player to bottom
 	 *  return returns to the selected div before showLocation was used
-	 * 
-	 * 	nextMethod: This is a string that will be evaluated, so build
-	 *  from the golbal space down (usually from objGame).
 	 *  
 	 *  showLocation (optional): if used the selected container will be displayed
 	 *  in a non-interactive format in the correct non_game divs. Since the non_game

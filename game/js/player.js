@@ -1,4 +1,4 @@
-function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandSize, inInitiative, inGold, inAbility, inURL, inAlt, inOppDeckID, inIsPlayer ){
+function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandSize, inInitiative, inGold, inAbility, inURL, inAlt, inOppDeckID ){
 	var deckID = inDeckID;
 	var playerName = inPlayerName
 	var name = inName;
@@ -270,13 +270,14 @@ function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandS
 	this.drawCard = drawCard;
 	
 	/* Moves the top card of the deck array to the discard array and
-	 * returns a copy of the moved card  */
+	 * returns a copy of the moved card. Returns undefined if no cards in deck */
 	function overturnCard(){
-		var overturned = deck.pop().clone();
+		if( deck.length == 0 ) return undefined;
+		var overturned = deck.pop();
 		
 		discard[discard.length] = overturned;
 		
-		return overturnCard;
+		return overturned.clone();
 	}
 	this.overturnCard = overturnCard;
 	
@@ -426,14 +427,14 @@ function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandS
 				prayerSpent++;
 			}
 			
-			momentumMod += field[i].getYourCostMods( 1 );
-			MPMod += field[i].getYourCostMods( 2 );
+			momentumMod += parseInt( field[i].getYourCostMods( 1 ) );
+			MPMod += parseInt( field[i].getYourCostMods( 2 ) );
 			
-			attackDamageMod += field[i].getDamageMods( 1 );
-			magicDamageMod += field[i].getDamageMods( 2 );
+			attackDamageMod += parseInt( field[i].getDamageMods( 1 ) );
+			magicDamageMod += parseInt( field[i].getDamageMods( 2 ) );
 			
-			attackDeffenseMod += field[i].getDeffenseMods( 1 );
-			magicDeffenseMod += field[i].getDeffenseMods( 2 );
+			attackDeffenseMod += parseInt( field[i].getDeffenseMods( 1 ) );
+			magicDeffenseMod += parseInt( field[i].getDeffenseMods( 2 ) );
 		}
 		prayer = prayerAll - prayerSpent;
 		
@@ -474,7 +475,8 @@ function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandS
 		
 		//Action is only required if cost is magic or gold
 		if( objCard.getCostID() == 2 ){
-			var toPay = objCard.getCost() + MPMod;
+			var toPay = 0
+			if( objCard.getCost() != 0 ) toPay = objCard.getCost() + MPMod;
 			for( var i = 0; i < field.length; i++ ){
 				if( field[i].getID() == 1 && field[i].isResource() ){
 					field[i].setCounter( 2 );
@@ -580,7 +582,7 @@ function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandS
 		sortForBlock( tempHand );
 		
 		for( var i = 0; i < tempHand.length; i++ ){
-			if( tempHand[i].isBlockLegal() ){
+			if( tempHand[i].isBlockLegalHand( objGame.getCardInPlay(), 'reaction' ) ){
 				objGame.getControls().addCardToArray( tempHand[i].clone(), 'objGame.blockPicked( ' + tempHand[i].getID() + ' )' );
 			} else {
 				objGame.getControls().addCardToArray( tempHand[i].clone(), '' );
@@ -591,8 +593,8 @@ function Player( inDeckID, inPlayerName, inName, inClassID, inClassName, inHandS
 		objGame.getControls().addCardSubDiv( objGame.getCardInPlay().getID() );
 		objGame.getControls().appendSubText( ' you may attempt to pick a card to block below.' );
 		
-		objGame.getControls().prependText( '<p>Choose a card from bellow, or pass your turn.</p>' );
-		objGame.getControls().appendText( '<span class="fake_link" onClick="objGame.playCardSuccess();">Pass Turn</span>' );
+		objGame.getControls().prependText( '<p>Choose a card from bellow, or pass.</p>' );
+		objGame.getControls().appendText( '<span class="fake_link" onClick="objGame.playCardSuccess();">Pass</span>' );
 		
 		objGame.getControls().changePositionAnimate( 'objGame.getControls().addCards()' );
 	}

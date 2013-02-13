@@ -6,7 +6,7 @@
 </cfsilent>
 <cfoutput>
 <cfloop query="sql_game">
-	var objPlayer = new Player( #deck_id_one#
+	var objPlayer = new PlayerPlayer( #deck_id_one#
 		, '#player_one#'
 		, '#name_one#'
 		, #class_id_one#
@@ -17,10 +17,9 @@
 		, '#ability_one#'
 		, '#url_one#'
 		, '#alt_one#'
-		, #deck_id_two#
-		, 1 );
+		, #deck_id_two# );
 	objGame.addPlayer( objPlayer, 0)
-	var objPlayer = new Player( #deck_id_two#
+	var objPlayer = new PlayerPlayer( #deck_id_two#
 		, '#player_two#'
 		, '#name_two#'
 		, #class_id_two#
@@ -31,8 +30,7 @@
 		, '#ability_two#'
 		, '#url_two#'
 		, '#alt_two#'
-		, #deck_id_one#
-		, 0 );
+		, #deck_id_one# );
 	objGame.addPlayer( objPlayer, 1)
 	
 	<cfif deck_id_one EQ deck_id_current_turn>
