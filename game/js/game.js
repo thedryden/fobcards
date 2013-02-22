@@ -209,7 +209,7 @@ function Game( inGameID ){
 			if( players[playerLoopIndex].startGameAbility() ) return true;
 		}
 		
-		equipPlay( 1 );
+		equipPlay( -1 );
 	}
 	this.startGameAbility = startGameAbility;
 	
@@ -226,7 +226,12 @@ function Game( inGameID ){
 		//Two passes in a row - move to regular game phase
 		if( cardID == 0 && cardInPlay == undefined ){
 			cardInPlay = undefined;
-			postEquipAbility();
+			
+			objControls.resetCardArray();
+			objControls.changePosition( 'player' );
+			objControls.prependText( '<p>Both players have passed, the Equip phase has ended.<p>' );
+			objGame.getControls().appendText( '<span class="fake_link" onClick="objGame.postEquipAbility();">Continue</span>' );
+			objControls.changePositionAnimate( 'objGame.getControls().addCards()' );
 			return;
 		}
 		

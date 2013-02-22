@@ -314,11 +314,12 @@ function Card( inID
 	this.isResource = isResource;
 	
 	function isSecondType( secondTypeID ){
-		if( secondType.indexOf( secondTypeID ) == -1 ){
-			return false;
-		} else {
-			return true;
+		for( var i = 0; i < secondType.length; i++ ){
+			if( secondType[i][0] == 6 ){
+				return true;
+			}
 		}
+		return false;
 	}
 	this.isSecondType = isSecondType;
 	

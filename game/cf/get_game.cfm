@@ -6,7 +6,12 @@
 </cfsilent>
 <cfoutput>
 <cfloop query="sql_game">
-	var objPlayer = new PlayerPlayer( #deck_id_one#
+	<cfif session.cfs_player_id EQ player_id_one>
+	var objPlayer = new PlayerPlayer();
+	<cfelse>
+	var objPlayer = new PlayerAI();
+	</cfif>
+	objPlayer.init( #deck_id_one#
 		, '#player_one#'
 		, '#name_one#'
 		, #class_id_one#
@@ -19,7 +24,13 @@
 		, '#alt_one#'
 		, #deck_id_two# );
 	objGame.addPlayer( objPlayer, 0)
-	var objPlayer = new PlayerPlayer( #deck_id_two#
+	
+	<cfif session.cfs_player_id EQ player_id_two>
+	var objPlayer = new PlayerPlayer();
+	<cfelse>
+	var objPlayer = new PlayerAI();
+	</cfif>
+	objPlayer.init( #deck_id_two#
 		, '#player_two#'
 		, '#name_two#'
 		, #class_id_two#

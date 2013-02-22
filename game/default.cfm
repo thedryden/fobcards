@@ -15,6 +15,7 @@
 	<script src="js/cards.js" type="text/javascript"></script>
 	<script src="js/player.js" type="text/javascript"></script>
 	<script src="js/players/playerplayer.js" type="text/javascript"></script>
+	<script src="js/players/playerai.js" type="text/javascript"></script>
 	<script src="js/controls.js" type="text/javascript"></script>
 	
 	<title>Field of Battle (cards)</title>
