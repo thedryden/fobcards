@@ -1,10 +1,10 @@
-MP.prototype = Object.create(Card.prototype);
-MP.constructor = MP;
+Beat.prototype = Object.create(Card.prototype);
+Beat.constructor = Beat;
 
-function MP(){};
+function Beat(){};
 
-MP.prototype.clone = function(){
-	var tempCard = new MP();
+Beat.prototype.clone = function(){
+	var tempCard = new Beat();
 	tempCard.init( this.cardID
 		, this.name
 		, this.imageID
@@ -50,16 +50,14 @@ MP.prototype.clone = function(){
 	return tempCard;		
 }
 
-MP.prototype.isResource = function(){
-	if( counter > 0 ){
-		return false;
+Beat.prototype.cardOnPlayEffect = function(){
+	if( objGame.getCurrentPlayer().getDeckID() != objGame.getIsPlayer( true ).getDeckID() ){
+		objGame.getCurrentPlayer().drawCardShow( 1, 'objGame.blockOnPlayAbility()', '<p>You drew this cards due to Beat.</p>' )
+		
+		return true;	
 	} else {
-		return resource;
+		objGame.getCurrentPlayer().drawCard( 1 );
 	}
-}
-
-MP.prototype.cardOnPlayEffect = function(){
-	objGame.addSpellsPlayed( -1 );
 	
-	return false;
+	return true;
 }

@@ -1,4 +1,38 @@
-function Card( inID
+function Card(){
+	this.cardID = 0;
+	this.name = '';
+	this.imageID = 0;
+	this.imageURL = '';
+	this.imageAlt = '';
+	this.imageHorizontal = false;
+	this.typeID = 0;
+	this.typeName = '';
+	this.typeOrder = 0;
+	this.costID = 0;
+	this.costName = '';
+	this.costURL = '';
+	this.cost = 0;
+	this.costName = '';
+	this.costURL =  '';
+	this.cost =  0;
+	this.damage = 0;
+	this.resource = false;
+	this.effectText = '';
+	this.flavorText = '';
+	
+	this.counter = 0;	
+}
+
+Card.prototype.secondType = [];
+Card.prototype.blockAs = [];
+Card.prototype.blockAsSecondType = [];
+Card.prototype.blockCards = [];
+Card.prototype.blockCardsSecondType = [];
+Card.prototype.costMods = [];
+Card.prototype.damageMods = [];
+Card.prototype.deffenseMods = [];
+
+Card.prototype.init = function( inID
 	, inName
 	, inImageID
 	, inImageURL
@@ -37,89 +71,83 @@ function Card( inID
 	, inDeffenseModsPlayedTurnOnly
 	, inDeffenseModsModInt ){
 
-	var cardID = inID;
-	var name = inName;
-	var imageID = inImageID;
-	var imageURL = inImageURL;
-	var imageAlt = inImageAlt;
-	var imageHorizontal = bitToBool( inImageHorizontal );
-	var typeID = inTypeID;
-	var typeName = inTypeName;
-	var typeOrder = inTypeOrder;
-	var costID = inCostID;
-	var costName = inCostName;
-	var costURL = inCostURL;
-	var cost = inCost;
-	var costName = inCostName;
-	var costURL =  inCostURL;
-	var cost =  inCost;
-	var damage = inDamage;
-	var resource = bitToBool( inResource );
-	var effectText = inEffectText;
-	var flavorText = inFlavorText;
+	this.cardID = inID;
+	this.name = inName;
+	this.imageID = inImageID;
+	this.imageURL = inImageURL;
+	this.imageAlt = inImageAlt;
+	this.imageHorizontal = bitToBool( inImageHorizontal );
+	this.typeID = inTypeID;
+	this.typeName = inTypeName;
+	this.typeOrder = inTypeOrder;
+	this.costID = inCostID;
+	this.costName = inCostName;
+	this.costURL = inCostURL;
+	this.cost = inCost;
+	this.costName = inCostName;
+	this.costURL =  inCostURL;
+	this.cost =  inCost;
+	this.damage = inDamage;
+	this.resource = bitToBool( inResource );
+	this.effectText = inEffectText;
+	this.flavorText = inFlavorText;
 	
-	effectText = effectText.replace( "[momentum]", momentumIcon );
-	effectText = effectText.replace( "[mp]", MPIcon );
-	effectText = effectText.replace( "[gold]", goldIcon );
-	effectText = effectText.replace( "[piety]", pietyIcon );
-	effectText = effectText.replace( "[power]", powerIcon );
-	effectText = effectText.replace( "[nature]", natureIcon );
-	effectText = effectText.replace( "[spell]", spellIcon );
-	effectText = effectText.replace( "[chain]", chainIcon );
-	effectText = effectText.replace( "[armor]", armorIcon );
-	effectText = effectText.replace( "[weapon]", weaponIcon );
-	effectText = effectText.replace( "[shield]", shieldIcon );
-	effectText = effectText.replace( "[trap]", trapIcon );
-	
-	var counter = 0;
+	this.effectText = this.effectText.replace( "[momentum]", momentumIcon );
+	this.effectText = this.effectText.replace( "[mp]", MPIcon );
+	this.effectText = this.effectText.replace( "[gold]", goldIcon );
+	this.effectText = this.effectText.replace( "[piety]", pietyIcon );
+	this.effectText = this.effectText.replace( "[power]", powerIcon );
+	this.effectText = this.effectText.replace( "[nature]", natureIcon );
+	this.effectText = this.effectText.replace( "[spell]", spellIcon );
+	this.effectText = this.effectText.replace( "[chain]", chainIcon );
+	this.effectText = this.effectText.replace( "[armor]", armorIcon );
+	this.effectText = this.effectText.replace( "[weapon]", weaponIcon );
+	this.effectText = this.effectText.replace( "[shield]", shieldIcon );
+	this.effectText = this.effectText.replace( "[trap]", trapIcon );
 	
 	//Second Type an array containing the cards second type(s)
 	//as well as the types names, and url. Empty array means no
 	//second type
 	if( $.isArray( inSecondType ) ){
-		var secondType = inSecondType;
+		this.secondType = inSecondType;
 	} else {
 		var temp = inSecondType.split(',');
 		var temp1 = inSecondTypeName.split(',');
 		var temp2 = inSecondTypeURL.split(',');
 		
-		var secondType = [];
-		
 		for( var i = 0; i < temp.length; i++ ){
-			secondType[i] = [ temp[i], temp1[i], temp2[i] ];
+			this.secondType[i] = [ temp[i], temp1[i], temp2[i] ];
 		}
 	}
 	
 	//Block As -- simple array of type ids that the card can 
 	//be blocked as in addition to primary
 	if( $.isArray( inBlockAs ) ){
-		var blockAs = inBlockAs;
+		this.blockAs = inBlockAs;
 	} else {
-		var blockAs = inBlockAs.split(',');
+		this.blockAs = inBlockAs.split(',');
 	}
 	
 	//Block As Second Type -- simple array of second type id
 	//that the card can be blocked as in addition to primary
 	if( $.isArray( inBlockAsSecondType ) ){
-		var blockAsSecondType = inBlockAsSecondType;
+		this.blockAsSecondType = inBlockAsSecondType;
 	} else {
-		var blockAsSecondType = inBlockAsSecondType.split(',');
+		this.blockAsSecondType = inBlockAsSecondType.split(',');
 	}
 	
 	//Block Cards -- lists the card type this card will block (empty
 	//array means it blocks no cards) as well as any restritions
 	//0 = typeID, 1 = Min Damage, 2 = Max Damage
 	if( $.isArray( inBlockCards ) ){
-		var blockCards = inBlockCards;
+		this.blockCards = inBlockCards;
 	} else {
 		var temp = inBlockCards.split(',');
 		var temp1 = inBlockCardsMinDamage.split(',');
 		var temp2 = inBlockCardsMaxDamage.split(',');
 		
-		var blockCards = [];
-		
 		for( var i = 0; i < temp.length; i++ ){
-			blockCards[i] = [ temp[i], temp1[i], temp2[i] ];
+			this.blockCards[i] = [ temp[i], temp1[i], temp2[i] ];
 		}
 	}
 	
@@ -127,16 +155,14 @@ function Card( inID
 	//block (empty array means it blocks no cards) as well as any restritions
 	//0 = Second typeID, 1 = Min Damage, 2 = Max Damage
 	if( $.isArray( inBlockCardsSecondType ) ){
-		var blockCardsSecondType = inBlockCardsSecondType;
+		this.blockCardsSecondType = inBlockCardsSecondType;
 	} else {
 		temp = inBlockCardsSecondType.split(',');
 		temp1 = inBlockCardsSecondTypeMinDamage.split(',');
 		temp2 = inBlockCardsSecondTypeMaxDamage.split(',');
 		
-		var blockCardsSecondType = [];
-		
 		for( var i = 0; i < temp.length; i++ ){
-			blockCardsSecondType[i] = [ temp[i], temp1[i], temp2[i] ];
+			this.blockCardsSecondType[i] = [ temp[i], temp1[i], temp2[i] ];
 		}
 	}
 	
@@ -144,532 +170,478 @@ function Card( inID
 	//empty array means no mods
 	//0 = typeID, 1 = Played Turn Only, 2 = Effect Owner, 3 = Mod
 	if( $.isArray( inCostMods ) ){
-		var costMods = inCostMods;
+		this.costMods = inCostMods;
 	} else {
 		temp = inCostMods.split(',');
 		temp1 = inCostModsPlayedTurnOnly.split(',');
 		temp2 = inCostModsEffectOwner.split(',');
 		var temp3 = inCostModsModInt.split(',');
 		
-		var costMods = [];
-		
 		for( var i = 0; i < temp.length; i++ ){
-			costMods[i] = [ temp[i], bitToBool( temp1[i] ), bitToBool( temp2[i] ), temp3[i] ];
+			this.costMods[i] = [ temp[i], bitToBool( temp1[i] ), bitToBool( temp2[i] ), temp3[i] ];
 		}
 	}
 	
 	//Damage Mods -- lists all damage mods, as well as data about how to apply
 	//empty array means no mods
 	if( $.isArray( inDamageMods ) ){
-		var damageMods = inDamageMods;
+		this.damageMods = inDamageMods;
 	} else {
 		temp = inDamageMods.split(',');
 		temp1 = inDamageModsPlayedTurnOnly.split(',');
 		temp2 = inDamageModsModInt.split(',');
 		
-		var damageMods = [];
-		
 		for( var i = 0; i < temp.length; i++ ){
-			damageMods[i] = [ temp[i], bitToBool( temp1[i] ), temp2[i] ];
+			this.damageMods[i] = [ temp[i], bitToBool( temp1[i] ), temp2[i] ];
 		}
 	}
 	
 	//Deffense Mods -- lists all deffense mods, as well as data about how to apply
 	//empty array means no mods
 	if( $.isArray( inDeffenseMods ) ){
-		var deffenseMods = inDeffenseMods;
+		this.deffenseMods = inDeffenseMods;
 	} else {
 		temp = inDeffenseMods.split(',');
 		temp1 = inDeffenseModsPlayedTurnOnly.split(',');
 		temp2 = inDeffenseModsModInt.split(',');
 		
-		var deffenseMods = [];
-		
 		for( var i = 0; i < temp.length; i++ ){
-			deffenseMods[i] = [ temp[i], bitToBool( temp1[i] ), temp2[i] ];
+			this.deffenseMods[i] = [ temp[i], bitToBool( temp1[i] ), temp2[i] ];
 		}
 	}
+}
 
-	function clone(){
-		var tempCard = new Card( cardID
-			, name
-			, imageID
-			, imageURL
-			, imageAlt
-			, imageHorizontal
-			, typeID
-			, typeName
-			, typeOrder
-			, costID
-			, costName
-			, costURL
-			, cost
-			, damage
-			, resource
-			, effectText
-			, flavorText
-			, secondType
-			, ''//inSecondTypeName
-			, ''//inSecondTypeURL
-			, blockAs
-			, blockAsSecondType
-			, blockCards
-			, ''//blockCardsMinDamage
-			, ''//blockCardsMaxDamage
-			, blockCardsSecondType
-			, ''//blockCardsSecondTypeMinDamage
-			, ''//blockCardsSecondTypeMaxDamage
-			, costMods
-			, ''//inCostModsPlayedTurnOnly
-			, ''//inCostModsEffectOwner
-			, ''//inCostModsModInt
-			, damageMods
-			, ''//inDamageModsPlayedTurnOnly
-			, ''//inDamageModsModInt
-			, deffenseMods
-			, ''//inDeffenseModsPlayedTurnOnly
-			, ''//inDeffenseModsModInt 
-		); 
-		
-		tempCard.setCounter( this.getCounter() );
-		
-		return tempCard;		
-	}
-	this.clone = clone;
+Card.prototype.clone = function(){
+	var tempCard = new Card();
+	tempCard.init( this.cardID
+		, this.name
+		, this.imageID
+		, this.imageURL
+		, this.imageAlt
+		, this.imageHorizontal
+		, this.typeID
+		, this.typeName
+		, this.typeOrder
+		, this.costID
+		, this.costName
+		, this.costURL
+		, this.cost
+		, this.damage
+		, this.resource
+		, this.effectText
+		, this.flavorText
+		, this.secondType
+		, ''//inSecondTypeName
+		, ''//inSecondTypeURL
+		, this.blockAs
+		, this.blockAsSecondType
+		, this.blockCards
+		, ''//blockCardsMinDamage
+		, ''//blockCardsMaxDamage
+		, this.blockCardsSecondType
+		, ''//blockCardsSecondTypeMinDamage
+		, ''//blockCardsSecondTypeMaxDamage
+		, this.costMods
+		, ''//inCostModsPlayedTurnOnly
+		, ''//inCostModsEffectOwner
+		, ''//inCostModsModInt
+		, this.damageMods
+		, ''//inDamageModsPlayedTurnOnly
+		, ''//inDamageModsModInt
+		, this.deffenseMods
+		, ''//inDeffenseModsPlayedTurnOnly
+		, ''//inDeffenseModsModInt 
+	); 
 	
-	function addCounter( value ){
-		counter += value;
-	}
-	this.addCounter = addCounter;
+	tempCard.setCounter( this.getCounter() );
 	
-	function setCounter( value ){
-		counter = value;
-	}
-	this.setCounter = setCounter;
-	
-	function getID(){
-		return cardID;
-	}
-	this.getID = getID;
-	
-	function getName(){
-		return name;
-	}
-	this.getName = getName;
-	
-	function getTypeID(){
-		return typeID;
-	}
-	this.getTypeID = getTypeID;
-	
-	function getTypeName(){
-		return typeName;
-	}
-	this.getTypeName = getTypeName;
-	
-	function getTypeOrder(){
-		return typeOrder;
-	}
-	this.getTypeOrder = getTypeOrder;
-	
-	function getBlockTypeOrder(){
-		if( typeID == 8 ) return 0;
-		return typeOrder;
-	}
-	this.getBlockTypeOrder = getBlockTypeOrder;
-	
-	function getCostID(){
-		return costID;
-	}
-	this.getCostID = getCostID;
-	
-	function getCost(){
-		return cost;
-	}
-	this.getCost = getCost;
-	
-	function getCostName(){
-		return costName;
-	}
-	this.getCostName = getCostName;
-	
-	function getCostImg(){
-		return '<img src="' + pathImages() + '/' + costURL + '" alt="' + costName + '" />';
-	}
-	this.getCostImg = getCostImg;
-	
-	function getDamage(){
-		return damage;
-	}
-	this.getDamage = getDamage;
-	
-	function getCounter(){
-		return counter;
-	}
-	this.getCounter = getCounter;
-	
-	function isResource(){
-		return resource;
-	}
-	this.isResource = isResource;
-	
-	function isSecondType( secondTypeID ){
-		for( var i = 0; i < secondType.length; i++ ){
-			if( secondType[i][0] == 6 ){
-				return true;
-			}
-		}
-		return false;
-	}
-	this.isSecondType = isSecondType;
-	
-	function getImage( name, htmlClass, onClick ){
-		if( name != undefined && name != '' ){
-			name = ' name="' + name + '" id="' + name + '" '
-		} else {
-			name = '';
-		}
-		
-		if( htmlClass != undefined && htmlClass != '' ){
-			htmlClass = ' class="' + htmlClass + '" '
-		} else {
-			htmlClass = '';
-		}
-		
-		if( onClick != undefined && onClick != '' ){
-			onClick = ' onClick="' + onClick + '" '
-		} else {
-			onClick = '';
-		}
-		
-		return '<img ' + name + htmlClass + onClick + ' src="' + pathImages() + '/' + imageURL + '" alt="' + imageAlt + '" />';
-	}
-	this.getImage = getImage;
-	
-	function getImageHorizontal(){
-		return imageHorizontal;
-	}
-	this.getImageHorizontal = getImageHorizontal;
-	
-	function getSecondTypeImages(){
-		var images = '';
-		if( secondType[0][0] != '' && secondType[0][0] != undefined ){
-			for( var i = 0; i < secondType.length; i++ ){
-				images = '<img src="' + pathImages() + '/' + secondType[i][2] + '" alt="' + secondType[i][1] + '" />';
-			}	
-		}
-		return images;
-	}
-	this.getSecondTypeImages = getSecondTypeImages;
-	
-	function isBlockedAs( inTypeID ){
-		if( typeID == inTypeID ){
-			return true;
-		} else if ( blockAs.indexOf( inTypeID ) != -1 ){
+	return tempCard;		
+}
+
+Card.prototype.addCounter = function( value ){
+	this.counter += value;
+}
+
+Card.prototype.setCounter = function( value ){
+	this.counter = value;
+}
+
+Card.prototype.getID = function(){
+	return this.cardID;
+}
+
+Card.prototype.getName = function(){
+	return this.name;
+}
+
+Card.prototype.getTypeID = function(){
+	return this.typeID;
+}
+
+Card.prototype.getTypeName = function(){
+	return this.typeName;
+}
+
+Card.prototype.getTypeOrder = function(){
+	return this.typeOrder;
+}
+
+Card.prototype.getBlockTypeOrder = function(){
+	if( this.typeID == 8 ) return 0;
+	return this.typeOrder;
+}
+
+Card.prototype.getCostID = function(){
+	return this.costID;
+}
+
+Card.prototype.getCost = function(){
+	return this.cost;
+}
+
+Card.prototype.getCostName = function(){
+	return this.costName;
+}
+
+Card.prototype.getCostImg = function(){
+	return '<img src="' + pathImages() + '/' + this.costURL + '" alt="' + this.costName + '" />';
+}
+
+Card.prototype.getDamage = function(){
+	return this.damage;
+}
+
+Card.prototype.getCounter = function(){
+	return this.counter;
+}
+
+Card.prototype.isResource = function(){
+	return this.resource;
+}
+
+Card.prototype.isSecondType = function( secondTypeID ){
+	for( var i = 0; i < this.secondType.length; i++ ){
+		if( this.secondType[i][0] == 6 ){
 			return true;
 		}
-		return false;
 	}
-	this.isBlockedAs = isBlockedAs;
+	return false;
+}
+
+Card.prototype.getImage = function( name, htmlClass, onClick ){
+	if( name != undefined && name != '' ){
+		name = ' name="' + name + '" id="' + name + '" '
+	} else {
+		name = '';
+	}
 	
-	function isBlockedAsSecondType( inSecondTypeID ){
-		for( var i = 0; i < secondType.length; i++ ){
-			if( secondType[i][0] == inSecondTypeID ){
-				return true;
-			}
-		}
-		
-		if ( blockAsSecondType.indexOf( inSecondTypeID ) != -1 ){
+	if( htmlClass != undefined && htmlClass != '' ){
+		htmlClass = ' class="' + htmlClass + '" '
+	} else {
+		htmlClass = '';
+	}
+	
+	if( onClick != undefined && onClick != '' ){
+		onClick = ' onClick="' + onClick + '" '
+	} else {
+		onClick = '';
+	}
+	
+	return '<img ' + name + htmlClass + onClick + ' src="' + pathImages() + '/' + this.imageURL + '" alt="' + this.imageAlt + '" />';
+}
+
+Card.prototype.getImageHorizontal = function(){
+	return this.imageHorizontal;
+}
+
+Card.prototype.getSecondTypeImages = function(){
+	var images = '';
+	if( this.secondType[0][0] != '' && this.secondType[0][0] != undefined ){
+		for( var i = 0; i < this.secondType.length; i++ ){
+			images = '<img src="' + pathImages() + '/' + this.secondType[i][2] + '" alt="' + this.secondType[i][1] + '" />';
+		}	
+	}
+	return images;
+}
+
+Card.prototype.isBlockedAs = function( inTypeID ){
+	if( this.typeID == inTypeID ){
+		return true;
+	} else if ( this.blockAs.indexOf( inTypeID ) != -1 ){
+		return true;
+	}
+	return false;
+}
+
+Card.prototype.isBlockedAsSecondType = function( inSecondTypeID ){
+	for( var i = 0; i < this.secondType.length; i++ ){
+		if( this.secondType[i][0] == inSecondTypeID ){
 			return true;
 		}
-		return false;
 	}
-	this.isBlockedAsSecondType = isBlockedAsSecondType;
 	
-	function blocks( objCard ){
-		return false;	
+	if ( this.blockAsSecondType.indexOf( inSecondTypeID ) != -1 ){
+		return true;
 	}
-	this.blocks = blocks;
-	
-	function getEffectText(){
-		return effectText;
-	}
-	this.getEffectText = getEffectText;
-	
-	function getFlavorText(){
-		return flavorText;
-	}
-	this.getFlavorText = getFlavorText;
-	
-	function getYourCostMods( typeID ){
-		for( var i = 0; i < costMods.length; i++ ){
-			if( costMods[i][0] == typeID && !costMods[i][1] && costMods[i][2] ){
-				return costMods[i][3];
-			}
-		}
-		return 0;
-	}
-	this.getYourCostMods = getYourCostMods;
-	
-	function getYourCostModsThisTurn( typeID ){
-		for( var i = 0; i < costMods.length; i++ ){
-			if( costMods[i][0] == typeID && costMods[i][1] && costMods[i][2] ){
-				return costMods[i][3];
-			}
-		}
-		return 0;
-	}
-	this.getYourCostModsThisTurn = getYourCostModsThisTurn;
-	
-	function getOppCostMods( typeID ){
-		for( var i = 0; i < costMods.length; i++ ){
-			if( costMods[i][0] == typeID && !costMods[i][1] && !costMods[i][2] ){
-				return costMods[i][3];
-			}
-		}
-		return 0;
-	}
-	this.getOppCostMods = getOppCostMods;
-	
-	function getOppCostModsThisTurn( typeID ){
-		for( var i = 0; i < costMods.length; i++ ){
-			if( costMods[i][0] == typeID && costMods[i][1] && !costMods[i][2] ){
-				return costMods[i][3];
-			}
-		}
-		return 0;
-	}
-	this.getOppCostModsThisTurn = getOppCostModsThisTurn;
-	
-	function getDamageMods( typeID ){
-		for( var i = 0; i < damageMods.length; i++ ){
-			if( damageMods[i][0] == typeID && !damageMods[i][1] ){
-				return damageMods[i][2];
-			}
-		}
-		return 0;
-	}
-	this.getDamageMods = getDamageMods;
-	
-	function getDamageModsThisTurn( typeID ){
-		for( var i = 0; i < damageMods.length; i++ ){
-			if( damageMods[i][0] == typeID && damageMods[i][1] ){
-				return damageMods[i][2];
-			}
-		}
-		return 0;
-	}
-	this.getDamageModsThisTurn = getDamageModsThisTurn;
-	
-	function getDeffenseMods( typeID ){
-		for( var i = 0; i < deffenseMods.length; i++ ){
-			if( deffenseMods[i][0] == typeID && !deffenseMods[i][1] ){
-				return deffenseMods[i][2];
-			}
-		}
-		return 0;
-	}
-	this.getDeffenseMods = getDeffenseMods;
-	
-	function getDeffenseModsThisTurn( typeID ){
-		for( var i = 0; i < deffenseMods.length; i++ ){
-			if( deffenseMods[i][0] == typeID && deffenseMods[i][1] ){
-				return deffenseMods[i][2];
-			}
-		}
-		return 0;
-	}
-	this.getDeffenseModsThisTurn = getDeffenseModsThisTurn;
-	
-	function isLegal(){
-		if( typeID == 8 ) return false;
-		
-		var available = -1;
-		var tempCost = cost;
-		
-		switch( costID ){
-			case 1: //Momentum
-				available = objGame.getCurrentPlayer().getMomentum();
-				if( cost != 0 ) tempCost += objGame.getCurrentPlayer().getMomentumMod();
-				break;
-			case 2: //MP
-				available = objGame.getCurrentPlayer().getMP();
-				if( cost != 0 ) tempCost += objGame.getCurrentPlayer().getMPMod();
-				break;
-			case 3: //Gold
-				available = objGame.getCurrentPlayer().getGold();
-				break;
-			case 4: //Prayer for Piety
-				available = objGame.getCurrentPlayer().getPrayer();
-				break;
-			case 5: //Prayer for Power
-				available = objGame.getCurrentPlayer().getPrayer();
-				break;
-			case 6: //Nature
-				available = objGame.getCurrentPlayer().getPrayer();
-				break;
-		}
-		
-		if( available >= cost ){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	this.isLegal = isLegal;
-	
-	function isBlockLegalHand(){
-		if( typeID != 8 ) return false;
-		
-		var available = -1;
-		
-		switch( costID ){
-			case 1: //Momentum
-				available = objGame.getReactionPlayer().getMomentum();
-				break;
-			case 2: //MP
-				available = objGame.getReactionPlayer().getMP();
-				break;
-			case 3: //Gold
-				available = objGame.getReactionPlayer().getGold();
-				break;
-			case 4: //Prayer for Piety
-				available = objGame.getReactionPlayer().getPrayer();
-				break;
-			case 5: //Prayer for Power
-				available = objGame.getReactionPlayer().getPrayer();
-				break;
-			case 6: //Nature
-				available = objGame.getReactionPlayer().getPrayer();
-				break;
-		}
-		
-		if( available < cost ) return false;
-		
-		var damage = objGame.getCardDamage();
+	return false;
+}
 
-		//0 = typeID, 1 = Min Damage, 2 = Max Damage
-		for( var i = 0; i < blockCards.length; i++ ){
-			if( objGame.getCardInPlay().isBlockedAs( blockCards[i][0] ) ){
-				if( damage >= blockCards[i][1] 
-					&& ( blockCards[i][2] == -1 || damage <= blockCards[i][2] ) ) return true;
-			}
-		}
-		for( var i = 0; i < blockCardsSecondType.length; i++ ){
-			if( objGame.getCardInPlay().isBlockedAsSecondType( blockCardsSecondType[i] ) ){
-				if( damage >= blockCardsSecondType[i][1] 
-					&& ( blockCardsSecondType[i][2] == -1 || damage <= blockCardsSecondType[i][2] ) ) return true;
-			}
-		}
-		return false;
-	}
-	this.isBlockLegalHand = isBlockLegalHand;
-	
-	function isBlockLegalOverturn(){
-		if( typeID != 8 ) return false;
-		
-		var available = -1;
-		if( costID == 1 ) available = objGame.getReactionPlayer().getMomentum();
-		
-		if( available < cost ) return false;
-		
-		var damage = objGame.getCardDamage();
+Card.prototype.blocks = function( objCard ){
+	return false;	
+}
 
-		//0 = typeID, 1 = Min Damage, 2 = Max Damage
-		for( var i = 0; i < blockCards.length; i++ ){
-			if( objGame.getCardInPlay().isBlockedAs( blockCards[i][0] ) ){
-				if( damage >= blockCards[i][1] 
-					&& ( blockCards[i][2] == -1 || damage <= blockCards[i][2] ) ) return true;
-			}
-		}
-		for( var i = 0; i < blockCardsSecondType.length; i++ ){
-			if( objGame.getCardInPlay().isBlockedAsSecondType( blockCardsSecondType[i][0] ) ){
-				if( damage >= blockCardsSecondType[i][1] 
-					&& ( blockCardsSecondType[i][2] == -1 || damage <= blockCardsSecondType[i][2] ) ) return true;
-			}
-		}
-		return false;
-	}
-	this.isBlockLegalOverturn = isBlockLegalOverturn;
-	
-	//When determining resources before picking a card, after oppPlayCardAbilityMods
-	function playCardFieldEffectMods(){
-		return false;
-	}
-	this.playCardFieldEffectMods = playCardFieldEffectMods;
-	
-	//When determining resources before picking a card, after oppPlayCardAbilityMods
-	function oppPlayCardFieldEffectMods(){
-		return false;
-	}
-	this.oppPlayCardFieldEffectMods = oppPlayCardFieldEffectMods;
-	
-	//When determining resources before picking a card, after playCardFieldEffectMods
-	function playCardPlayedThisTurnMods(){
-		return false;
-	}
-	this.playCardPlayedThisTurnMods = playCardPlayedThisTurnMods;
+Card.prototype.getEffectText = function(){
+	return this.effectText;
+}
 
-	//Directly after the cost is payed
-	//Effect of the card played when the cost is payed
-	//!!!!!!! This card is in charge of determining where to resume if a interupt is called.
-	function payCostEffect(){
-		return false;	
+Card.prototype.getFlavorText = function(){
+	return this.flavorText;
+}
+
+Card.prototype.getYourCostMods = function( typeID ){
+	for( var i = 0; i < this.costMods.length; i++ ){
+		if( this.costMods[i][0] == typeID && !this.costMods[i][1] && this.costMods[i][2] ){
+			return this.costMods[i][3];
+		}
 	}
-	this.payCostEffect = payCostEffect;
+	return 0;
+}
+
+Card.prototype.getYourCostModsThisTurn = function( typeID ){
+	for( var i = 0; i < this.costMods.length; i++ ){
+		if( this.costMods[i][0] == typeID && this.costMods[i][1] && this.costMods[i][2] ){
+			return this.costMods[i][3];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.getOppCostMods = function( typeID ){
+	for( var i = 0; i < this.costMods.length; i++ ){
+		if( this.costMods[i][0] == typeID && !this.costMods[i][1] && !this.costMods[i][2] ){
+			return this.costMods[i][3];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.getOppCostModsThisTurn = function( typeID ){
+	for( var i = 0; i < this.costMods.length; i++ ){
+		if( this.costMods[i][0] == typeID && this.costMods[i][1] && !this.costMods[i][2] ){
+			return this.costMods[i][3];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.getDamageMods = function( typeID ){
+	for( var i = 0; i < this.damageMods.length; i++ ){
+		if( this.damageMods[i][0] == typeID && !this.damageMods[i][1] ){
+			return this.damageMods[i][2];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.getDamageModsThisTurn = function( typeID ){
+	for( var i = 0; i < this.damageMods.length; i++ ){
+		if( this.damageMods[i][0] == typeID && this.damageMods[i][1] ){
+			return this.damageMods[i][2];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.getDeffenseMods = function( typeID ){
+	for( var i = 0; i < this.deffenseMods.length; i++ ){
+		if( this.deffenseMods[i][0] == typeID && !this.deffenseMods[i][1] ){
+			return this.deffenseMods[i][2];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.getDeffenseModsThisTurn = function( typeID ){
+	for( var i = 0; i < this.deffenseMods.length; i++ ){
+		if( this.deffenseMods[i][0] == typeID && this.deffenseMods[i][1] ){
+			return this.deffenseMods[i][2];
+		}
+	}
+	return 0;
+}
+
+Card.prototype.isLegal = function(){
+	if( this.typeID == 8 ) return false;
 	
-	//When determining resources before picking a card, after oppPlayCardAbilityMods
-	function blockCardFieldEffectMods(){	
+	var available = -1;
+	var tempCost = this.cost;
+	
+	switch( this.costID ){
+		case 1: //Momentum
+			available = objGame.getCurrentPlayer().getMomentum();
+			if( this.cost != 0 ) tempCost += objGame.getCurrentPlayer().getMomentumMod();
+			break;
+		case 2: //MP
+			available = objGame.getCurrentPlayer().getMP();
+			if( this.cost != 0 ) tempCost += objGame.getCurrentPlayer().getMPMod();
+			break;
+		case 3: //Gold
+			available = objGame.getCurrentPlayer().getGold();
+			break;
+		case 4: //Prayer for Piety
+			available = objGame.getCurrentPlayer().getPrayer();
+			break;
+		case 5: //Prayer for Power
+			available = objGame.getCurrentPlayer().getPrayer();
+			break;
+		case 6: //Nature
+			available = objGame.getCurrentPlayer().getPrayer();
+			break;
+	}
+	
+	if( available >= this.cost ){
+		return true;
+	} else {
 		return false;
 	}
-	this.blockCardFieldEffectMods = blockCardFieldEffectMods;
+}
+
+Card.prototype.isBlockLegalHand = function(){
+	if( this.typeID != 8 ) return false;
 	
-	//When determining resources before picking a card, after oppPlayCardAbilityMods
-	function oppBlockCardFieldEffectMods(){
-		return false;
-	}
-	this.oppBlockCardFieldEffectMods = oppBlockCardFieldEffectMods;
+	var available = -1;
 	
-	//When determining resources before picking a card, after playCardFieldEffectMods
-	function blockCardPlayedThisTurnMods(){
-		return false;
+	switch( this.costID ){
+		case 1: //Momentum
+			available = objGame.getReactionPlayer().getMomentum();
+			break;
+		case 2: //MP
+			available = objGame.getReactionPlayer().getMP();
+			break;
+		case 3: //Gold
+			available = objGame.getReactionPlayer().getGold();
+			break;
+		case 4: //Prayer for Piety
+			available = objGame.getReactionPlayer().getPrayer();
+			break;
+		case 5: //Prayer for Power
+			available = objGame.getReactionPlayer().getPrayer();
+			break;
+		case 6: //Nature
+			available = objGame.getReactionPlayer().getPrayer();
+			break;
 	}
-	this.blockCardPlayedThisTurnMods = blockCardPlayedThisTurnMods;
 	
-	//Just before you do damage, after ability mods
-	function doDamageFieldEffectMods(){
-		return false;
-	}
-	this.doDamageFieldEffectMods = doDamageFieldEffectMods;
+	if( available < this.cost ) return false;
 	
-	//Just before you take damage, after ability mods
-	function takeDamageFieldEffectMods(){
-		return false;
+	var damage = objGame.getCardDamage();
+
+	//0 = typeID, 1 = Min Damage, 2 = Max Damage
+	for( var i = 0; i < this.blockCards.length; i++ ){
+		if( objGame.getCardInPlay().isBlockedAs( this.blockCards[i][0] ) ){
+			if( damage >= this.blockCards[i][1] 
+				&& ( this.blockCards[i][2] == -1 || damage <= this.blockCards[i][2] ) ) return true;
+		}
 	}
-	this.takeDamageFieldEffectMods = takeDamageFieldEffectMods;
+	for( var i = 0; i < this.blockCardsSecondType.length; i++ ){
+		if( objGame.getCardInPlay().isBlockedAsSecondType( this.blockCardsSecondType[i] ) ){
+			if( damage >= this.blockCardsSecondType[i][1] 
+				&& ( this.blockCardsSecondType[i][2] == -1 || damage <= this.blockCardsSecondType[i][2] ) ) return true;
+		}
+	}
+	return false;
+}
+
+Card.prototype.isBlockLegalOverturn = function(){
+	if( this.typeID != 8 ) return false;
 	
-	//Just before you do damage, after field effect mods
-	function doDamagePlayedThisTurnMods(){
-		return false;
-	}
-	this.doDamagePlayedThisTurnMods = doDamagePlayedThisTurnMods;
+	var available = -1;
+	if( this.costID == 1 ) available = objGame.getReactionPlayer().getMomentum();
 	
-	//Just before you do damage, after field effect mods
-	function takeDamagePlayedThisTurnMods(){
-		return false;
-	}
-	this.takeDamagePlayedThisTurnMods = takeDamagePlayedThisTurnMods;
+	if( available < this.cost ) return false;
 	
-	//Effect of a card that triggers on successful play
-	//!!!!!!! This card is in charge of determining where to resume if a interupt is called.
-	function cardOnPlayEffect(){
-		return false;
+	var damage = objGame.getCardDamage();
+
+	//0 = typeID, 1 = Min Damage, 2 = Max Damage
+	for( var i = 0; i < this.blockCards.length; i++ ){
+		if( objGame.getCardInPlay().isBlockedAs( this.blockCards[i][0] ) ){
+			if( damage >= this.blockCards[i][1] 
+				&& ( this.blockCards[i][2] == -1 || damage <= this.blockCards[i][2] ) ) return true;
+		}
 	}
-	this.cardOnPlayEffect = cardOnPlayEffect;
-	
-	//Effect of a block that tiggers when played
-	function blockOnPlayEffect(){
-		return false;
+	for( var i = 0; i < this.blockCardsSecondType.length; i++ ){
+		if( objGame.getCardInPlay().isBlockedAsSecondType( this.blockCardsSecondType[i][0] ) ){
+			if( damage >= this.blockCardsSecondType[i][1] 
+				&& ( this.blockCardsSecondType[i][2] == -1 || damage <= this.blockCardsSecondType[i][2] ) ) return true;
+		}
 	}
-	this.blockOnPlayEffect = blockOnPlayEffect;
+	return false;
+}
+
+//When determining resources before picking a card, after oppPlayCardAbilityMods
+Card.prototype.playCardFieldEffectMods = function(){
+	return false;
+}
+
+//When determining resources before picking a card, after oppPlayCardAbilityMods
+Card.prototype.oppPlayCardFieldEffectMods = function(){
+	return false;
+}
+
+//When determining resources before picking a card, after playCardFieldEffectMods
+Card.prototype.playCardPlayedThisTurnMods = function(){
+	return false;
+}
+
+//Directly after the cost is payed
+//Effect of the card played when the cost is payed
+//!!!!!!! This card is in charge of determining where to resume if a interupt is called.
+Card.prototype.payCostEffect = function(){
+	return false;	
+}
+
+//When determining resources before picking a card, after oppPlayCardAbilityMods
+Card.prototype.blockCardFieldEffectMods = function(){	
+	return false;
+}
+
+//When determining resources before picking a card, after oppPlayCardAbilityMods
+Card.prototype.oppBlockCardFieldEffectMods = function(){
+	return false;
+}
+
+//When determining resources before picking a card, after playCardFieldEffectMods
+Card.prototype.blockCardPlayedThisTurnMods = function(){
+	return false;
+}
+
+//Just before you do damage, after ability mods
+Card.prototype.doDamageFieldEffectMods = function(){
+	return false;
+}
+
+//Just before you take damage, after ability mods
+Card.prototype.takeDamageFieldEffectMods = function(){
+	return false;
+}
+
+//Just before you do damage, after field effect mods
+Card.prototype.doDamagePlayedThisTurnMods = function(){
+	return false;
+}
+
+//Just before you do damage, after field effect mods
+Card.prototype.takeDamagePlayedThisTurnMods = function(){
+	return false;
+}
+
+//Effect of a card that triggers on successful play
+//!!!!!!! This card is in charge of determining where to resume if a interupt is called.
+Card.prototype.cardOnPlayEffect = function(){
+	return false;
+}
+
+//Effect of a block that tiggers when played
+Card.prototype.blockOnPlayEffect = function(){
+	return false;
 }

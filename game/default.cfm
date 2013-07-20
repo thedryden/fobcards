@@ -10,13 +10,24 @@
 	<script src="#application.pathScripts#/jquery-1.7.2.min.js" type="text/javascript"></script>
 	<script src="#application.pathScripts#/pathes.js" type="text/javascript"></script>
 	<script src="#application.pathScripts#/general.js" type="text/javascript"></script>
+	
 	<script src="js/game.js" type="text/javascript"></script>
-	<script src="js/card.js" type="text/javascript"></script>
-	<script src="js/cards.js" type="text/javascript"></script>
+	<script src="js/controls.js" type="text/javascript"></script>
+	
 	<script src="js/player.js" type="text/javascript"></script>
 	<script src="js/players/playerplayer.js" type="text/javascript"></script>
 	<script src="js/players/playerai.js" type="text/javascript"></script>
-	<script src="js/controls.js" type="text/javascript"></script>
+	
+	<script src="js/card.js" type="text/javascript"></script>
+	<script src="js/cards.js" type="text/javascript"></script>
+	
+	<script src="js/cards/mp.js" type="text/javascript"></script>	
+	<script src="js/cards/tithe.js" type="text/javascript"></script>
+	<script src="js/cards/gastrap.js" type="text/javascript"></script>
+	<script src="js/cards/arrowtrap.js" type="text/javascript"></script>
+	<script src="js/cards/greasetrap.js" type="text/javascript"></script>
+	<script src="js/cards/advance.js" type="text/javascript"></script>
+	<script src="js/cards/beat.js" type="text/javascript"></script>
 	
 	<title>Field of Battle (cards)</title>
 </head>

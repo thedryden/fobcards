@@ -1,6 +1,8 @@
 function Game( inGameID ){
 	var game = inGameID;
 	
+	var equipPhase = false;
+	
 	var cardsPlayedThisTurn = [];//An array storing all cards played on the current turns
 	var cardInPlay = undefined;//Stores the choosen card to play so all subsequent functions have access
 	var blockInPlay = undefined;//Stores the choosen card to block so all subsequent functions have access
@@ -18,6 +20,8 @@ function Game( inGameID ){
 	var objControls = new Controls();//Stores the controls object used to manipulate the UI
 	var objCards = new Cards();//Stores the cards object, used to get any cardID as an object
 	
+	var selectVal = []; //Stores select data, two dimentional first position cardObj second, number selected.
+
 	//AJAX call to used to popule objCards
 	$.ajax({ url: "cf/get_cards.cfm", cache: false }).done( function( html ){
 		eval(html);
@@ -162,10 +166,30 @@ function Game( inGameID ){
 	}
 	this.getCardDamage = getCardDamage;
 	
+	function isEquipPhase(){
+		return equipPhase;
+	}
+	this.isEquipPhase = isEquipPhase;
+	
+	function addSpellsPlayed( value ){
+		spellsPlayed += value;
+	}
+	this.addSpellsPlayed = addSpellsPlayed;
+	
+	function clearSelectVal(){
+		selectVal.length = 0;
+	}
+	this.clearSelectVal = clearSelectVal;
+	
+	function getSelectVal(){
+		return selectVal;
+	}
+	this.getSelectVal = getSelectVal;
+	
 	// First function called to starts the game
 	function startGame(){
 		//If this is the first turn of the game
-		if (currentPlayer == -1) {
+		if (currentPlayer == -1) {			
 			for (var i = 0; i < players.length; i++) {
 				//Add gold to field
 				for (var j = 0; j < players[i].getStartingGold(); j++) {
@@ -209,6 +233,7 @@ function Game( inGameID ){
 			if( players[playerLoopIndex].startGameAbility() ) return true;
 		}
 		
+		equipPhase = true;
 		equipPlay( -1 );
 	}
 	this.startGameAbility = startGameAbility;
@@ -295,6 +320,8 @@ function Game( inGameID ){
 	
 	//Resets hands for normal play
 	function startGamePlay(){
+		equipPhase = false;
+		
 		//Sets current player
 		currentPlayer = 0;
 		
@@ -486,11 +513,25 @@ function Game( inGameID ){
 		
 		setValues();
 		
+		tempField = getReactionPlayer().getField();
+		handLength = getReactionPlayer().getHand().length;
+		for( var i = 0; i < tempField.length; i++ ){
+			if( tempField[i].getID() == 50 ){
+				getReactionPlayer().addCard( tempField[i].getCounter(), 'hand', handLength, 0 );
+				handLength++;
+			}
+		}
 		getReactionPlayer().chooseBlock();
 	}
 	this.oppBlockCardAbilityMods = oppBlockCardAbilityMods;
 	
 	function playCardSuccess(){
+		var tempHand = getReactionPlayer().getHand();
+		for( var i = 0; i < tempHand.length; i++ ){
+			if( tempHand[i].isSecondType( 6 ) )
+				getReactionPlayer().removeCard( tempHand[i].getID(), 'hand' );
+		}
+		
 		getCurrentPlayer().addCard( cardInPlay.getID(), 'field', getCurrentPlayer().getField().length, 0 );
 		
 		if( cardInPlay.cardOnPlayEffect() ) return true;
@@ -578,6 +619,14 @@ function Game( inGameID ){
 	this.playCardSuccessEnd = playCardSuccessEnd;
 	
 	function blockPicked( cardID ){
+		if( !objCards.getCard( cardID ).isSecondType( 6 ) ){
+			var tempHand = getReactionPlayer().getHand();
+			for( var i = 0; i < tempHand.length; i++ ){
+				if( tempHand[i].isSecondType( 6 ) )
+					getReactionPlayer().removeCard( tempHand[i].getID(), 'hand' );
+			}
+		}
+		
 		getCurrentPlayer().addCard( cardInPlay.getID(), 'discard', getCurrentPlayer().getDiscard().length, 0 );
 		
 		blockInPlay = getCard( cardID );
@@ -808,6 +857,7 @@ function Game( inGameID ){
 		} else {
 			objControls.prependText( text );
 		}
+		objControls.appendText( '<p><span class="fake_link" onClick="' + nextMethod + '">Contiue the Game</a></p>' );
 		
 		if( position == 'reaction' ){
 			objControls.prependSubText( reactionText );
@@ -819,4 +869,5 @@ function Game( inGameID ){
 		setValues();
 		objControls.changePositionAnimate( 'objGame.getControls().addCards()' );
 	}
+	this.overturnCards = overturnCards;
 }

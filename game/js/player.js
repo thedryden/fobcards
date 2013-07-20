@@ -254,9 +254,12 @@ Player.prototype.getPrayerSpent = function(){
 
 //Draws num cards from top of deck to hand
 Player.prototype.drawCard = function( num ){
+	var output = [];
 	for( var i=0; i < num; i++ ){
-		this.hand[this.hand.length] = this.deck.pop().clone();			
+		output[i] = this.deck.pop().clone();
+		this.hand[this.hand.length] = output[i];			
 	}
+	return output;
 }
 
 /* Moves the top card of the deck array to the discard array and
@@ -331,6 +334,9 @@ Player.prototype.moveCard = function( cardID, source, destination ){
 	
 	if( source == destination ) return false;
 	
+	tempCard = objGame.getCard( cardID );
+	if( tempCard.getTypeID() == 7 && destination == 'discard' ) destination ='removed';
+	
 	var index = -1;
 		
 	switch ( destination ) {
@@ -354,6 +360,25 @@ Player.prototype.moveCard = function( cardID, source, destination ){
 	if( index == -1 ) return false;
 	
 	if( this.removeCard( cardID, source ) ){
+		if( destination == 'field' ){
+			var oneOnlyStart = [3,4,5,6];//Weapon,Sheild,Armor,Trap
+			var oneOnly = []
+			for( var i = 0; i < oneOnlyStart.length; i++ ){
+				if( tempCard.isSecondType( oneOnlyStart[i] ) ) oneOnly[oneOnly.length] = oneOnlyStart;	
+			}
+			if( oneOnly.length > 0 ){
+				tempField = getField();
+				for( var oo = 0; oo < oneOnly.length; oo++ ){
+					for( var i = 0; i < tempField.length; i++ ){
+						if( tempField[i].isSecondType( oneOnly[oo] ) ){ 
+							moveCard( tempField[i].getID, 'field', 'discard' );
+							break;
+						}
+					}
+				}
+			}
+		}
+		
 		this.addCard( cardID, destination, index, 0 );
 	}
 	

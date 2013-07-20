@@ -4,6 +4,33 @@ PlayerAI.constructor = PlayerAI;
 function PlayerAI(){};
 
 // ***--------------------------------------------***--------------------------------------------***
+//Easy of use "core" functions
+PlayerAI.prototype.discardCard = function( num, manditory, nextMethod ){
+	objGame.clearSelectVal();
+	tempA = objGame.getSelectVal();
+	
+	if( num <= 0){
+		eval(nextMethod);
+		return;
+	}
+	
+	if( !manditory ){
+		discardResolve( nextMethod );
+		return;
+	}
+	
+	if( num > hand.length ) num = hand.length;
+	
+	for( var i = 0; i < num; i++ ){
+		tempA = hand[i];
+	}
+}
+
+PlayerAI.prototype.discardResolve = function( nextMethod ){
+	
+}
+
+// ***--------------------------------------------***--------------------------------------------***
 //Game control functions
 PlayerAI.prototype.equipPlay = function( cardID ){
 	tempHand = this.getHand();
@@ -73,4 +100,19 @@ PlayerAI.prototype.chooseBlock = function(){
 			return;
 		}
 	}
+	
+	objGame.playCardSuccess();
+}
+
+/*	Card specific logic below here.
+ * 	The following functions are called by cards when a non-standard decision needs to be made
+ * 	that will have to be different depending on if a player or AI is making it.
+ */
+PlayerAI.prototype.Tithe = function(){
+	objGame.clearSelectVal();
+	tempA = objGame.getSelectVal();
+	
+	tempA[0] = [ objGame.getCard( 2 ), 0 ];
+	
+	objGame.getCardInPlay().titheResolve();
 }

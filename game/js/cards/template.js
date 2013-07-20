@@ -1,10 +1,10 @@
-MP.prototype = Object.create(Card.prototype);
-MP.constructor = MP;
+Template.prototype = Object.create(Card.prototype);
+Template.constructor = Template;
 
-function MP(){};
+function Template(){};
 
-MP.prototype.clone = function(){
-	var tempCard = new MP();
+Template.prototype.clone = function(){
+	var tempCard = new Template();
 	tempCard.init( this.cardID
 		, this.name
 		, this.imageID
@@ -48,18 +48,4 @@ MP.prototype.clone = function(){
 	tempCard.setCounter( this.getCounter() );
 	
 	return tempCard;		
-}
-
-MP.prototype.isResource = function(){
-	if( counter > 0 ){
-		return false;
-	} else {
-		return resource;
-	}
-}
-
-MP.prototype.cardOnPlayEffect = function(){
-	objGame.addSpellsPlayed( -1 );
-	
-	return false;
 }

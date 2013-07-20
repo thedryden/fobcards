@@ -383,13 +383,13 @@ Click to choose an class...<br />
 	<tr>
 	<th>#card_type#</th>
 	<th>
-		<input name="chk_damage_played" id="chk_damage_played" value="#card_type_id#" type="checkbox"<cfif damage_played_turn_only NEQ ""> checked="true"</cfif> />
+		<input name="chk_damage_played" id="chk_damage_played" value="#card_type_id#" type="checkbox"<cfif damage_played_turn_only NEQ "" AND damage_played_turn_only EQ 1> checked="true"</cfif> />
 	</th>
 	<th>
 		<input name="txt_damage_mod_#card_type_id#" id="txt_damage_mod_#card_type_id#" class="small_form_third right" onBlur="jvEnsureNum( 'txt_damage_mod_#card_type_id#' );" value="#damage_mod#" />
 	</th>
 	<th>
-		<input name="chk_deffense_played" id="chk_deffense_played" value="#card_type_id#" type="checkbox"<cfif deffense_played_turn_only NEQ ""> checked="true"</cfif> />
+		<input name="chk_deffense_played" id="chk_deffense_played" value="#card_type_id#" type="checkbox"<cfif deffense_played_turn_only NEQ "" AND deffense_played_turn_only EQ 1> checked="true"</cfif> />
 	</th>
 	<th>
 		<input name="txt_deffense_#card_type_id#" id="txt_deffense_#card_type_id#" class="small_form_third right" onBlur="jvEnsureNum( 'txt_deffense_#card_type_id#' );" value="#deffense_mod#" />
@@ -414,7 +414,7 @@ Click to choose an class...<br />
 	<tr>
 	<th>#cost_type#</th>
 	<th>
-		<input name="chk_cm_played" id="chk_cm_played" class="small_form_third right" type="checkbox" value="#cost_type_id#"<cfif played_turn_only NEQ ""> checked="true"</cfif> />
+		<input name="chk_cm_played" id="chk_cm_played" class="small_form_third right" type="checkbox" value="#cost_type_id#"<cfif played_turn_only NEQ "" AND played_turn_only EQ 1> checked="true"</cfif> />
 	</th>
 	<th>
 		<input name="chk_cm_effect_owner" id="chk_cm_effect_owner" class="small_form_third right" type="checkbox" value="#cost_type_id#"<cfif toString(effect_owner) EQ "1"> checked="true"</cfif> />

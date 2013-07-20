@@ -546,7 +546,9 @@ function Controls(){
 		
 		jvTop = ( 150 * ( jvRow + 1 ) ) + 5;
 		
-		var commitButton = '<button name="bt_select_commit" id="bt_select_commit" onClick="' + nextMethod + '">Select Cards</button>'
+		var commitButton = '<button name="bt_select_commit" id="bt_select_commit" onClick="objGame.getControls().popGameSelectVal( ';
+		commitButton += "'" + nextMethod + "'";
+		commitButton += ' )">Select Cards</button>';
 		$('#' + activeDiv + '_cards').append( commitButton );
 		
 		$('#bt_select_commit').css({
@@ -557,7 +559,6 @@ function Controls(){
 		if( selectMandatory ){
 			$('#bt_select_commit').attr({ 'disabled': 'true' })
 		}
-		
 	}
 	this.selectCards = selectCards;
 	
@@ -609,6 +610,22 @@ function Controls(){
 		selectCount += parseInt( value );
 	}
 	this.addSelectCount = addSelectCount;
+	
+	function popGameSelectVal( nextMethod ){
+		objGame.clearSelectVal();
+		tempA = objGame.getSelectVal();
+		
+		for( var i = 0; i < cards.length; i++ ){
+			var value = $('#sel_' + activeDiv + '_' + i).val();
+			
+			if( value > 0 ){
+				tempA[tempA.length] = [ cards[i][0], value ];
+			}
+		}
+		
+		eval( nextMethod );
+	}
+	this.popGameSelectVal = popGameSelectVal;
 	
 	function resetCardArray(){
 		cards.length = 0;

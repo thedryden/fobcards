@@ -5,11 +5,16 @@
 </cfsilent>
 <cfoutput>
 <cfloop query="sql_card">
-<cfif java_class_name EQ 'mp.js'>
-objGame.addCard( new #java_class_name#( #card_id#
+<cfif java_class_name NEQ ''>
+if( typeof #java_class_name# == 'function' ){
+	tempCard = new #java_class_name#()
+} else {
+	tempCard = new Card()
+}
 <cfelse>
-objGame.addCard( new Card( #card_id#
+tempCard = new Card();
 </cfif>
+tempCard.init( #card_id#
 	, '#name#'
 	, #image_id#
 	, '#image_url#'
@@ -46,7 +51,9 @@ objGame.addCard( new Card( #card_id#
 	, '#card_damage_mods_mod_int#'
 	, '#card_deffense_mods#'
 	, '#card_deffense_mods_played_turn_only#'
-	, '#card_deffense_mods_mod_int#' )
+	, '#card_deffense_mods_mod_int#'
 )
+
+objGame.addCard( tempCard );
 </cfloop>
 </cfoutput>

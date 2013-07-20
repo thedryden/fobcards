@@ -1,10 +1,10 @@
-MP.prototype = Object.create(Card.prototype);
-MP.constructor = MP;
+Advance.prototype = Object.create(Card.prototype);
+Advance.constructor = Advance;
 
-function MP(){};
+function Advance(){};
 
-MP.prototype.clone = function(){
-	var tempCard = new MP();
+Advance.prototype.clone = function(){
+	var tempCard = new Advance();
 	tempCard.init( this.cardID
 		, this.name
 		, this.imageID
@@ -50,16 +50,11 @@ MP.prototype.clone = function(){
 	return tempCard;		
 }
 
-MP.prototype.isResource = function(){
-	if( counter > 0 ){
-		return false;
-	} else {
-		return resource;
-	}
-}
-
-MP.prototype.cardOnPlayEffect = function(){
-	objGame.addSpellsPlayed( -1 );
+Advance.prototype.cardOnPlayEffect = function(){
+	var message = objGame.getCurrentPlayer().getPlayerName();
+	message += ' overturned this card when playing Advance.';
 	
-	return false;
+	objGame.overturnCards( 'current', 1, 'objGame.playCardSuccessAbility();', message );
+	
+	return true;
 }

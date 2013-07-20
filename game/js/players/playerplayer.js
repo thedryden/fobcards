@@ -2,7 +2,36 @@ PlayerPlayer.prototype = new Player();
 PlayerPlayer.constructor = PlayerPlayer;
 
 function PlayerPlayer(){};
+
+// ***--------------------------------------------***--------------------------------------------***
+//Easy of use "core" functions
+PlayerPlayer.prototype.drawCardShow = function( num, nextMethod, message ){
+	objGame.getControls().resetCardArray();
+	objGame.getControls().changePosition( 'player' );
 	
+	for( var i = 0; i < num; i++ ){
+		var drawnCard = drawCard();
+		objGame.getControls().addCardToArray( drawnCard[i], '' );
+	}
+	if( message == '' || message == undefined ){
+		objGame.getControls().prependText( '<p>You drew these cards.</p>' )	
+	} else {
+		objGame.getControls().prependText( message )
+	}
+	objGame.getControls().appendText( '<p><span class="fake_link" onClick="' + nextMethod + '">Continue</span></p>' );
+}
+
+PlayerAI.prototype.discardCard = function( num, manditory, nextMethod, optionalArray ){
+	a = [];
+	if( optionalArray != undefined ){
+		a = optionalArray;
+	} else {
+		a = this.hand;
+	}
+	
+	//selectCards( nextMethod, quantity, manditory )
+}
+
 // ***--------------------------------------------***--------------------------------------------***
 //Game control functions
 PlayerPlayer.prototype.equipPlay = function( cardID ){
@@ -82,4 +111,23 @@ PlayerPlayer.prototype.chooseBlock = function(){
 	objGame.getControls().appendText( '<span class="fake_link" onClick="objGame.playCardSuccess();">Pass</span>' );
 	
 	objGame.getControls().changePositionAnimate( 'objGame.getControls().addCards()' );
+}
+
+/*	Card specific logic below here.
+ * 	The following functions are called by cards when a non-standard decision needs to be made
+ * 	that will have to be different depending on if a player or AI is making it.
+ */
+PlayerPlayer.prototype.Tithe = function(){
+	objGame.getControls().resetCardArray();
+	objGame.getControls().changePosition( 'player' );
+	
+	for( var i = 0; i < this.gold; i++ ){
+		objGame.getControls().addCardToArray( objGame.getCard( 2 ), '' );
+	}
+	
+	objGame.getControls().prependSubText( 'You may choose any number of gold below which will be removed from the game'
+		+ ', for every 2 gold you choose your deck will be searched for 1 Prayer for Piety or Prayer for Power which will '
+		+ 'be placed in your field.');
+	
+	objGame.getControls().changePositionAnimate( "selectCards( 'objGame.getCardInPlay().titheResolve()', " + this.gold + ", false );" );	
 }
